@@ -80,7 +80,7 @@ public class AskWidget extends AppWidgetProvider {
             pid = f.optString("p");
             label = NAMES[idxOf(pid)] + " · " + f.optString("ago");
             String tp = f.optString("topic");   // الموضوع القصير يُذكر، والطويل يُختصر في «ما حدّثتني به» ليتسع السطر
-            text = (tp.length() <= 18 && !tp.endsWith("…")) ? "ما جديد «" + tp + "»؟" : "ما جديد ما حدّثتني به؟";
+            text = (tp.length() <= 11 && !tp.endsWith("…")) ? "ما جديد «" + tp + "»؟" : "ما جديد أمرك؟";
             path = "chat.html?p=" + pid + "&s=" + f.optString("session_id");
             done = f.optString("session_id") + "|" + f.optString("at");
         } else if (kind == 1) {
@@ -102,7 +102,7 @@ public class AskWidget extends AppWidgetProvider {
         v.setInt(R.id.box, "setBackgroundResource", scroll ? R.drawable.w_scroll : R.drawable.w_ornate);
         v.setTextViewText(R.id.hint, text);
         v.setTextViewText(R.id.label, label);
-        v.setTextViewTextSize(R.id.hint, TypedValue.COMPLEX_UNIT_SP, label.isEmpty() ? 16.5f : 15f);
+        v.setTextViewTextSize(R.id.hint, TypedValue.COMPLEX_UNIT_SP, label.isEmpty() ? 16.5f : 14.5f);
         v.setViewVisibility(R.id.label, label.isEmpty() ? View.GONE : View.VISIBLE);
 
         Intent open = new Intent(c, MainActivity.class).putExtra("mpath", path).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
