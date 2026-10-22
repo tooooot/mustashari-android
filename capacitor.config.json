@@ -1,0 +1,25 @@
+{
+  "appId": "net.wardyat.mustashari",
+  "appName": "مستشاري",
+  "webDir": "www",
+  "server": {
+    "url": "https://mustashari.wardyat.net",
+    "errorPath": "offline.html",
+    "allowNavigation": [
+      "mustashari.wardyat.net"
+    ]
+  },
+  "android": {
+    "includePlugins": [
+      "@capgo/native-purchases"
+    ]
+  },
+  "ios": {
+    "includePlugins": [
+      "@capgo/native-purchases"
+    ],
+    "contentInset": "always",
+    "backgroundColor": "#2a160c"
+  },
+  "backgroundColor": "#2a160c"
+}

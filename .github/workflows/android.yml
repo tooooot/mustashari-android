@@ -1,0 +1,58 @@
+name: android
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm install --no-audit --no-fund
+      - run: npx cap sync android
+      - name: Drop signing (التوقيع محلياً بمفتاح الرفع الخاص)
+        run: sed -i '/signingConfig signingConfigs.release/d' android/app/build.gradle
+      - name: Build unsigned APK
+        working-directory: android
+        run: chmod +x gradlew && ./gradlew assembleRelease --no-daemon --console=plain
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mustashari-apk
+          path: android/app/build/outputs/apk/release/*.apk
+  emulator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm install --no-audit --no-fund
+      - run: npx cap sync android
+      - name: Build debug APK (فيه شاشة معاينة الودجت)
+        working-directory: android
+        run: sed -i '/signingConfig signingConfigs.release/d' app/build.gradle && chmod +x gradlew && ./gradlew assembleDebug --no-daemon --console=plain
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+      - run: cp android/app/build/outputs/apk/debug/app-debug.apk app.apk
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          script: bash ci/emu_test.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: emu-out
+          path: out/
