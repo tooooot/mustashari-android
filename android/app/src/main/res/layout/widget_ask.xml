@@ -21,8 +21,8 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:paddingStart="26dp"
-            android:paddingEnd="96dp"
+            android:paddingStart="100dp"
+            android:paddingEnd="62dp"
             android:textColor="#6A5336"
             android:textSize="14sp" />
 

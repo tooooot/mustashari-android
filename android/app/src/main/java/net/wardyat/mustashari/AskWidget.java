@@ -30,6 +30,8 @@ public class AskWidget extends AppWidgetProvider {
     static SharedPreferences sp(Context c) { return c.getSharedPreferences("ask_widget", Context.MODE_PRIVATE); }
 
     static int index(Context c) {
+        int pin = sp(c).getInt("pin", -1);
+        if (pin >= 0) return Math.floorMod(pin + sp(c).getInt("shift", 0), IDS.length);   // ثابت: اللمس ينتقل منه للتالي
         int slot = (int) (System.currentTimeMillis() / (4L * 3600 * 1000));
         return Math.floorMod(slot + sp(c).getInt("shift", 0), IDS.length);
     }

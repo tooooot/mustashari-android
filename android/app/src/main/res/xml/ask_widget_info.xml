@@ -4,6 +4,8 @@
     android:initialLayout="@layout/widget_ask"
     android:minWidth="250dp"
     android:minHeight="90dp"
+    android:configure="net.wardyat.mustashari.AskConfigActivity"
+    android:widgetFeatures="reconfigurable"
     android:resizeMode="horizontal"
     android:targetCellWidth="4"
     android:targetCellHeight="2"
