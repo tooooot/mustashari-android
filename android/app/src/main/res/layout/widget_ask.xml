@@ -8,11 +8,11 @@
     <FrameLayout
         android:id="@+id/box"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="72dp"
         android:layout_gravity="bottom"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="23dp"
-        android:layout_marginRight="46dp"
+        android:layout_marginRight="50dp"
         android:contentDescription="اكتب همّك"
         android:background="@drawable/w_ornate">
 
@@ -22,7 +22,7 @@
             android:gravity="center_vertical"
             android:orientation="vertical"
             android:paddingStart="46dp"
-            android:paddingEnd="30dp">
+            android:paddingEnd="56dp">
 
             <TextView
                 android:id="@+id/label"
@@ -48,8 +48,8 @@
 
     <ImageView
         android:id="@+id/bust"
-        android:layout_width="84dp"
-        android:layout_height="108dp"
+        android:layout_width="104dp"
+        android:layout_height="112dp"
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="4dp"
         android:contentDescription="التالي"
@@ -60,7 +60,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="bottom|left"
-        android:layout_marginBottom="23dp"
+        android:layout_marginBottom="19dp"
         android:contentDescription="ابدأ"
         android:src="@drawable/w_coin" />
 </FrameLayout>

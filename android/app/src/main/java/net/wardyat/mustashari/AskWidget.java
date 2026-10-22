@@ -102,7 +102,7 @@ public class AskWidget extends AppWidgetProvider {
         v.setInt(R.id.box, "setBackgroundResource", scroll ? R.drawable.w_scroll : R.drawable.w_ornate);
         v.setTextViewText(R.id.hint, text);
         v.setTextViewText(R.id.label, label);
-        v.setTextViewTextSize(R.id.hint, TypedValue.COMPLEX_UNIT_SP, label.isEmpty() ? 17f : 15f);
+        v.setTextViewTextSize(R.id.hint, TypedValue.COMPLEX_UNIT_SP, label.isEmpty() ? 16.5f : 15f);
         v.setViewVisibility(R.id.label, label.isEmpty() ? View.GONE : View.VISIBLE);
 
         Intent open = new Intent(c, MainActivity.class).putExtra("mpath", path).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
