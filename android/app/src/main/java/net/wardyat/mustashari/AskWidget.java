@@ -79,7 +79,8 @@ public class AskWidget extends AppWidgetProvider {
         if (kind == 0) {
             pid = f.optString("p");
             label = NAMES[idxOf(pid)] + " · " + f.optString("ago");
-            text = "ما جديد أمرك: «" + f.optString("topic") + "»؟";
+            String tp = f.optString("topic");   // الموضوع القصير يُذكر، والطويل يُختصر في «ما حدّثتني به» ليتسع السطر
+            text = (tp.length() <= 18 && !tp.endsWith("…")) ? "ما جديد «" + tp + "»؟" : "ما جديد ما حدّثتني به؟";
             path = "chat.html?p=" + pid + "&s=" + f.optString("session_id");
             done = f.optString("session_id") + "|" + f.optString("at");
         } else if (kind == 1) {
