@@ -24,7 +24,7 @@
             android:paddingStart="100dp"
             android:paddingEnd="62dp"
             android:textColor="#6A5336"
-            android:textSize="14sp" />
+            android:textSize="13sp" />
 
         <ImageView
             android:id="@+id/coin"
