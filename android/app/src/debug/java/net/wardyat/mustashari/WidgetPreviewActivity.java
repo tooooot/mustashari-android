@@ -17,7 +17,7 @@ public class WidgetPreviewActivity extends Activity {
         Runnable draw = () -> {
             root.removeAllViews();
             View v = AskWidget.build(this).apply(this, root);
-            root.addView(v, new FrameLayout.LayoutParams((int) (320 * d), (int) (96 * d), Gravity.CENTER));
+            root.addView(v, new FrameLayout.LayoutParams((int) (320 * d), (int) (70 * d), Gravity.CENTER));
         };
         AskWidget.listener = () -> runOnUiThread(draw);
         draw.run();

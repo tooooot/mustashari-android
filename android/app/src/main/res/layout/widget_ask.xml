@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layoutDirection="rtl">
+    android:layoutDirection="rtl"
+    android:gravity="bottom"
+    android:orientation="horizontal"
+    android:paddingBottom="6dp">
+
+    <ImageView
+        android:id="@+id/bust"
+        android:layout_width="58dp"
+        android:layout_height="56dp"
+        android:contentDescription="التالي"
+        android:scaleType="fitEnd" />
 
     <FrameLayout
         android:id="@+id/box"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="8dp"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_weight="1"
+        android:layout_marginStart="2dp"
         android:contentDescription="اكتب همّك"
-        android:background="@drawable/w_box">
+        android:background="@drawable/w_scroll">
 
         <TextView
             android:id="@+id/hint"
@@ -21,27 +31,18 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="2"
-            android:paddingStart="100dp"
-            android:paddingEnd="62dp"
-            android:textColor="#6A5336"
-            android:textSize="13sp" />
-
-        <ImageView
-            android:id="@+id/coin"
-            android:layout_width="27dp"
-            android:layout_height="27dp"
-            android:layout_gravity="left|center_vertical"
-            android:layout_marginLeft="22dp"
-            android:src="@drawable/w_coin" />
+            android:textColor="#3A2410"
+            android:textSize="14sp"
+            android:textStyle="bold" />
     </FrameLayout>
 
     <ImageView
-        android:id="@+id/bust"
-        android:layout_width="84dp"
-        android:layout_height="81dp"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="8dp"
-        android:contentDescription="التالي"
-        android:scaleType="fitEnd" />
-</FrameLayout>
+        android:id="@+id/coin"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="6dp"
+        android:layout_marginStart="4dp"
+        android:contentDescription="ابدأ"
+        android:src="@drawable/w_coin" />
+</LinearLayout>

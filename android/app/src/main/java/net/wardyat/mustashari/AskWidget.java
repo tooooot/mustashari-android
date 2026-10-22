@@ -44,7 +44,9 @@ public class AskWidget extends AppWidgetProvider {
         v.setImageViewResource(R.id.bust, c.getResources().getIdentifier("w_bust_" + IDS[i], "drawable", c.getPackageName()));
         v.setTextViewText(R.id.hint, ls[Math.floorMod(slot, ls.length)]);
         Intent open = new Intent(c, MainActivity.class).putExtra("mpath", "chat.html?p=" + IDS[i]).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        v.setOnClickPendingIntent(R.id.box, PendingIntent.getActivity(c, 11, open, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT));
+        PendingIntent po = PendingIntent.getActivity(c, 11, open, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        v.setOnClickPendingIntent(R.id.box, po);
+        v.setOnClickPendingIntent(R.id.coin, po);
         Intent next = new Intent(c, AskWidget.class).setAction(NEXT);
         v.setOnClickPendingIntent(R.id.bust, PendingIntent.getBroadcast(c, 12, next, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT));
         return v;
