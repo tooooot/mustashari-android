@@ -22,7 +22,7 @@ for m in re.finditer(r'<node[^>]*>',x):
 sys.exit(1)
 PY
 }
-XY=$(tap_id 'اكتب همّك'); log "موضع الصندوق: $XY"
+XY=$(tap_id 'content-desc="اكتب همّك"'); log "موضع الصندوق: $XY"
 FY=$(tap_id 'content-desc="التالي"'); log "موضع الوجه: $FY"
 [ -n "$FY" ] && { adb shell input tap $FY; sleep 2; shot 02_next_persona; }
 [ -n "$XY" ] && { adb shell input tap $XY; sleep 20; shot 03_chat_opened; }

@@ -10,7 +10,7 @@ import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 
 /** ودجت «اكتب همّك»: وجه مستشار وجملة دعوة هادئة وصندوق بتصميم صندوق المحادثة.
- *  يتبدّل المستشار كل 4 ساعات، ولمسُ الوجه يبدّله فوراً، ولمسُ الصندوق يفتح حواراً جديداً معه.
+ *  يتبدّل المستشار كل 4 ساعات، ولمسُ صدر المستشار يبدّله فوراً، ولمسُ الصندوق يفتح حواراً جديداً معه.
  *  لا إشعارات ولا صوت. الجمل دعوة فقط، بلا عتاب ولا «اشتقنا». */
 public class AskWidget extends AppWidgetProvider {
     static final String NEXT = "net.wardyat.mustashari.WIDGET_NEXT";
@@ -37,19 +37,19 @@ public class AskWidget extends AppWidgetProvider {
     static RemoteViews build(Context c) {
         int i = index(c);
         String[] ls = LINES[i];
-        int day = (int) (System.currentTimeMillis() / (4L * 3600 * 1000));
+        int slot = (int) (System.currentTimeMillis() / (4L * 3600 * 1000));
         RemoteViews v = new RemoteViews(c.getPackageName(), R.layout.widget_ask);
-        v.setImageViewResource(R.id.face, c.getResources().getIdentifier("w_face_" + IDS[i], "drawable", c.getPackageName()));
-        v.setTextViewText(R.id.name, NAMES[i] + " · مستشار بالذكاء الاصطناعي");
-        v.setTextViewText(R.id.line, ls[Math.floorMod(day, ls.length)]);
+        v.setImageViewResource(R.id.bust, c.getResources().getIdentifier("w_bust_" + IDS[i], "drawable", c.getPackageName()));
+        v.setTextViewText(R.id.hint, ls[Math.floorMod(slot, ls.length)]);
         Intent open = new Intent(c, MainActivity.class).putExtra("mpath", "chat.html?p=" + IDS[i]).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent po = PendingIntent.getActivity(c, 11, open, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-        v.setOnClickPendingIntent(R.id.box, po);
-        v.setOnClickPendingIntent(R.id.line, po);
+        v.setOnClickPendingIntent(R.id.box, PendingIntent.getActivity(c, 11, open, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT));
         Intent next = new Intent(c, AskWidget.class).setAction(NEXT);
-        v.setOnClickPendingIntent(R.id.face, PendingIntent.getBroadcast(c, 12, next, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT));
+        v.setOnClickPendingIntent(R.id.bust, PendingIntent.getBroadcast(c, 12, next, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT));
         return v;
     }
+
+    /** للمعاينة في اختبار المحاكي فقط: يُستدعى بعد تبديل المستشار. */
+    static Runnable listener;
 
     @Override public void onUpdate(Context c, AppWidgetManager m, int[] ids) {
         for (int id : ids) m.updateAppWidget(id, build(c));
@@ -60,6 +60,7 @@ public class AskWidget extends AppWidgetProvider {
             sp(c).edit().putInt("shift", sp(c).getInt("shift", 0) + 1).apply();
             AppWidgetManager m = AppWidgetManager.getInstance(c);
             onUpdate(c, m, m.getAppWidgetIds(new ComponentName(c, AskWidget.class)));
+            if (listener != null) listener.run();
             return;
         }
         super.onReceive(c, it);
