@@ -14,6 +14,9 @@ public class WidgetPreviewActivity extends Activity {
         FrameLayout root = new FrameLayout(this);
         root.setBackgroundColor(Color.parseColor("#33414E"));
         float d = getResources().getDisplayMetrics().density;
+        // بيانات تجريبية تحاكي ردّ الخادم: متابعة مستحقّة + مقتطفات حقيقية من القائمة المتحقَّق منها
+        AskWidget.sp(this).edit().putString("wdata", "{\"follow\":{\"p\":\"ibn_khaldun\",\"session_id\":7,\"topic\":\"هل أوسع مشروعي الآن أم…\",\"days\":3,\"ago\":\"قبل 3 أيام\",\"at\":\"2026-10-19T10:00:00+00:00\"},"
+            + "\"quotes\":[{\"p\":\"ibn_al_qayyim\",\"text\":\"فإن الذنب كلما صغر في عين العبد عظم عند الله\",\"book\":\"الداء والدواء\",\"tr\":false},{\"p\":\"george_clason\",\"text\":\"ادفع لنفسك أولاً.\",\"book\":\"أغنى رجل في بابل\",\"tr\":true}],\"day\":20749}").putString("done", "").putInt("card", 0).apply();
         Runnable draw = () -> {
             root.removeAllViews();
             View v = AskWidget.build(this).apply(this, root);

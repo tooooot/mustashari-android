@@ -20,6 +20,12 @@ public class MainActivity extends BridgeActivity {
         String path = it == null ? null : it.getStringExtra("mpath");
         if (path == null || getBridge() == null) return;
         it.removeExtra("mpath");
+        String done = it.getStringExtra("fdone");   // فُتحت المتابعة: لا تظهر ثانية لنفس المحادثة
+        if (done != null) {
+            AskWidget.sp(this).edit().putString("done", done).apply();
+            AskWidget.updateAll(this);
+            it.removeExtra("fdone");
+        }
         getBridge().getWebView().post(() -> getBridge().getWebView().loadUrl("https://mustashari.wardyat.net/" + path));
     }
 }

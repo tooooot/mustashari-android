@@ -24,6 +24,6 @@ PY
 }
 XY=$(tap_id 'content-desc="اكتب همّك"'); log "موضع الصندوق: $XY"
 FY=$(tap_id 'content-desc="التالي"'); log "موضع الوجه: $FY"
-[ -n "$FY" ] && { adb shell input tap $FY; sleep 2; shot 02_next_persona; }
-[ -n "$XY" ] && { adb shell input tap $XY; sleep 20; shot 03_chat_opened; }
+for n in 2 3 4 5; do [ -n "$FY" ] && { adb shell input tap $FY; sleep 2; shot 0${n}_card; }; done
+[ -n "$XY" ] && { adb shell input tap $XY; sleep 20; shot 06_chat_opened; }
 adb logcat -d | grep -E "AndroidRuntime|FATAL|AskWidget" > $O/logcat.txt; tail -10 $O/logcat.txt | tee -a $R
