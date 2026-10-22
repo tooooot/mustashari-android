@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # يعرض الودجت على محاكي أندرويد 14 ويصوّره، ثم يلمس الصندوق ليرى فتح حوار المستشار.
-P=net.wardyat.mustashari; O=out; mkdir -p $O; R=$O/result.txt; : > $R
+P=net.wardyat.mustashari.test; C=net.wardyat.mustashari; O=out; mkdir -p $O; R=$O/result.txt; : > $R
 log() { echo "$@" | tee -a $R; }
 shot() { adb exec-out screencap -p > "$O/$1.png"; }
 adb wait-for-device; adb shell settings put global window_animation_scale 0; adb shell settings put global transition_animation_scale 0; adb shell settings put global animator_duration_scale 0
 adb install -r app.apk | tee -a $R
 adb logcat -c
-adb shell am start -n $P/.WidgetPreviewActivity >/dev/null; sleep 4; shot 01_widget
+adb shell am start -n $P/$C.WidgetPreviewActivity >/dev/null; sleep 4; shot 01_widget
 W=$(adb shell wm size | grep -o '[0-9]*x[0-9]*' | tail -1); log "شاشة $W"
 tap_id() {
   adb shell uiautomator dump /sdcard/ui.xml >/dev/null 2>&1; adb pull /sdcard/ui.xml $O/ui.xml >/dev/null 2>&1
