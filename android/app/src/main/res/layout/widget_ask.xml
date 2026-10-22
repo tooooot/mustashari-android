@@ -65,8 +65,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:paddingStart="12dp"
-                android:paddingEnd="62dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="68dp"
                 android:text="اكتب همّك هنا…"
                 android:textColor="#8C6F4E"
                 android:textSize="15sp" />
@@ -76,7 +76,7 @@
                 android:layout_width="34dp"
                 android:layout_height="34dp"
                 android:layout_gravity="left|center_vertical"
-                android:layout_marginLeft="19dp"
+                android:layout_marginLeft="23dp"
                 android:contentDescription="ابدأ"
                 android:src="@drawable/w_coin" />
         </FrameLayout>
