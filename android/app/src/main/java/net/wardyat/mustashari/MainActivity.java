@@ -26,6 +26,6 @@ public class MainActivity extends BridgeActivity {
             AskWidget.updateAll(this);
             it.removeExtra("fdone");
         }
-        getBridge().getWebView().post(() -> getBridge().getWebView().loadUrl("https://mustashari.wardyat.net/" + path));
+        getBridge().getWebView().postDelayed(() -> getBridge().getWebView().loadUrl("https://mustashari.wardyat.net/" + path), 700);   // بعد تحميل الصفحة الأولى عند التشغيل البارد
     }
 }

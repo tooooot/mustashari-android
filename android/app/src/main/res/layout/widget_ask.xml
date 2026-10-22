@@ -48,7 +48,7 @@
 
     <ImageView
         android:id="@+id/bust"
-        android:layout_width="100dp"
+        android:layout_width="84dp"
         android:layout_height="108dp"
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="4dp"
