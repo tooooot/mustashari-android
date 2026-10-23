@@ -51,7 +51,7 @@
         android:layout_width="104dp"
         android:layout_height="112dp"
         android:layout_gravity="bottom|right"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         android:contentDescription="التالي"
         android:scaleType="fitEnd" />
 

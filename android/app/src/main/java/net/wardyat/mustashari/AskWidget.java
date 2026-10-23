@@ -15,13 +15,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-/** ودجت واحد يتناوب بذكاء بين ثلاث بطاقات:
- *  متابعة (العالِم نفسه الذي شكوتَ له يسأل عن آخر مشكلة، بعد يومين، حتى تفتحها) على الصندوق المزخرف،
- *  حكمة اليوم (مقتطف موثّق قصير مع مصدره) على الرقّ، ودعوة هادئة «اكتب همّك» من عالِم يتبدّل.
- *  لا إشعارات ولا صوت ولا عتاب. مسّ الصدر ينتقل للبطاقة التالية، ومسّ الصندوق يفتح التطبيق. */
+/** ودجت واحد على الصندوق المزخرف: متابعة من العالِم نفسه الذي شكوتَ له (بعد يومين، حتى تفتحها)،
+ *  وإلا دعوة هادئة «اكتب همّك». مسّ الصدر يبدّل العالِم والعبارة معاً، ومسّ الصندوق يفتح محادثته.
+ *  لا إشعارات ولا صوت ولا عتاب. */
 public class AskWidget extends AppWidgetProvider {
     static final String NEXT = "net.wardyat.mustashari.WIDGET_NEXT";
     static final String API = "https://mustashari.wardyat.net/api/widget";
@@ -66,16 +64,13 @@ public class AskWidget extends AppWidgetProvider {
     static RemoteViews build(Context c) {
         JSONObject d = data(c);
         JSONObject f = follow(c, d);
-        JSONArray qs = d.optJSONArray("quotes");
-        boolean hasQ = qs != null && qs.length() > 0;
-        // التناوب الذكي: عند وجود متابعة تتصدّر (ثلثا الفترات)، وإلا تتبادل الحكمة والدعوة
-        int[] cycle = f != null ? (hasQ ? new int[]{0, 1, 0, 2} : new int[]{0, 2}) : (hasQ ? new int[]{1, 2} : new int[]{2});
         int slot = (int) (System.currentTimeMillis() / SLOT);
-        int kind = cycle[Math.floorMod(slot + sp(c).getInt("card", 0), cycle.length)];
+        // المتابعة تتصدّر ما لم يمسّ المستخدم الصدر في هذه الفترة؛ بعدها كل مسّة تبدّل العالِم والعبارة
+        boolean tapped = sp(c).getInt("tapslot", -1) == slot && sp(c).getInt("shift", 0) != 0;
+        int kind = (f != null && !tapped) ? 0 : 2;
 
         String pid, label = "", text, path;
-        boolean scroll = false;
-        String done = null;
+                String done = null;
         if (kind == 0) {
             pid = f.optString("p");
             label = NAMES[idxOf(pid)] + " · " + f.optString("ago");
@@ -83,23 +78,16 @@ public class AskWidget extends AppWidgetProvider {
             text = (tp.length() <= 11 && !tp.endsWith("…")) ? "ما جديد «" + tp + "»؟" : "ما جديد أمرك؟";
             path = "chat.html?p=" + pid + "&s=" + f.optString("session_id");
             done = f.optString("session_id") + "|" + f.optString("at");
-        } else if (kind == 1) {
-            JSONObject q = qs.optJSONObject(Math.floorMod(d.optInt("day"), qs.length()));
-            pid = q.optString("p");
-            label = NAMES[idxOf(pid)] + (q.optBoolean("tr") ? " · ترجمة" : "") + " · " + q.optString("book");
-            text = q.optString("text");
-            path = "chat.html?p=" + pid;
-            scroll = true;
         } else {
             int i = inviteIndex(c);
             pid = IDS[i];
-            text = LINES[i][Math.floorMod(slot, LINES[i].length)];
+            text = LINES[i][Math.floorMod(slot + sp(c).getInt("shift", 0), LINES[i].length)];
             path = "chat.html?p=" + pid;
         }
 
         RemoteViews v = new RemoteViews(c.getPackageName(), R.layout.widget_ask);
         v.setImageViewResource(R.id.bust, c.getResources().getIdentifier("w_bust_" + pid, "drawable", c.getPackageName()));
-        v.setInt(R.id.box, "setBackgroundResource", scroll ? R.drawable.w_scroll : R.drawable.w_ornate);
+        v.setInt(R.id.box, "setBackgroundResource", R.drawable.w_ornate);
         v.setTextViewText(R.id.hint, text);
         v.setTextViewText(R.id.label, label);
         v.setTextViewTextSize(R.id.hint, TypedValue.COMPLEX_UNIT_SP, label.isEmpty() ? 16.5f : 14.5f);
@@ -159,7 +147,7 @@ public class AskWidget extends AppWidgetProvider {
 
     @Override public void onReceive(Context c, Intent it) {
         if (NEXT.equals(it.getAction())) {
-            sp(c).edit().putInt("card", sp(c).getInt("card", 0) + 1).putInt("shift", sp(c).getInt("shift", 0) + 1).apply();
+            sp(c).edit().putInt("tapslot", (int) (System.currentTimeMillis() / SLOT)).putInt("shift", (sp(c).getInt("tapslot", -1) == (int) (System.currentTimeMillis() / SLOT) ? sp(c).getInt("shift", 0) : 0) + 1).apply();
             updateAll(c);
             if (listener != null) listener.run();
             return;
